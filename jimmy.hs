@@ -29,7 +29,6 @@ buildWords l =[(bsSig x,x) | r <- l, isUpper (BS.head r), BS.all isAlpha r, BS.l
 buildInventory :: [String] -> Int64
 buildInventory = sig . concat
 
-
 search :: [(Int64, BS.ByteString)] -> Int64 -> [[BS.ByteString]]
 search [] _ = []
 search orig@((sigw,w):wordlist) !inventory = case inventory `quotRem` sigw of
@@ -37,12 +36,9 @@ search orig@((sigw,w):wordlist) !inventory = case inventory `quotRem` sigw of
   _ -> rest
   where rest = search wordlist inventory
 
-
 primes = [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,101]
 
-
 sig  = product . map (\(c,n) ->  (fromJust $ lookup c costs) ^ n ) . lettercount
-
 
 bsSig = BS.foldl' (\a c -> fromJust (lookup c costs) * a) 1
 costs = fromList $ zip letters primes
